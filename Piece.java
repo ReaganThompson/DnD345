@@ -1,7 +1,16 @@
 import java.util.*;
 
 public class Piece{
-    private static int ID(){
+
+    private int IDnum;
+
+    public static int getIDnum(){
+        //return idnum
         return 0;
+    }
+
+    public static int[] moveTo(int[] newLocation){
+        //move piece to new location and return new location.
+        return newLocation;
     }
 }

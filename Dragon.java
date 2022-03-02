@@ -1,7 +1,11 @@
 import java.util.*;
 
-public class Dragon{
-    private static boolean isAwake(){
-        return 1;
+public class Dragon extends Piece{
+
+    private boolean awake;
+
+    public static boolean isAwake(){
+        //check conditions and update awake, then return
+        return awake;
     }
 }

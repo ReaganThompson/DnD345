@@ -1,24 +1,53 @@
+import Player;
+import Dragon;
+
 public class Square {
+
+    private boolean northWall;
+    private boolean eastWall;
+    private boolean southWall;
+    private boolean westWall;
+    private boolean isSecretRoom;
+    private boolean isTreasureRoom;
+
+    private Piece occupant;
+
+    private Square(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, boolean isSecretRoom, boolean isTreasureRoom){
+        this.northWall = northWall;
+        this.eastWall = eastWall;
+        this.southWall = southWall;
+        this.westWall = westWall;
+        this.isSecretRoom = isSecretRoom;
+        this.isTreasureRoom = isTreasureRoom;
+    }
+
     private static boolean hasNorthWall(){
-        return 0;
+        return northWall;
     }
     private static boolean hasEastWall(){
-        return 0;
+        return eastWall;
     }
     private static boolean hasSouthWall(){
-        return 0;
+        return southWall;
     }
     private static boolean hasWestWall(){
-        return 0;
+        return westWall;
     }
 
     private static int occupant(){
-        return 0;
+        //return occupant
+        return occupant;
     }
-    private static boolean isSecretRoom(){
-        return 0;
+
+    private static int occupant(Player p){
+        //update occupant and return
+        return occupant;
     }
-    private static boolean isTreasureRoom(){
-        return 0;
+
+    private static boolean getIsSecretRoom(){
+        return isSecretRoom;
+    }
+    private static boolean getIsTreasureRoom(){
+        return isTreasureRoom;
     }
 }
