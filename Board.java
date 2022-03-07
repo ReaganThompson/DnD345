@@ -1,13 +1,26 @@
 import java.util.*;
 
 public class Board{
-    private static int[] treasureRoom(){
+
+    private int[] treasureRoom, playerLocation, dragonLocation;
+
+    public void setTreasureRoom() {}
+
+    public int[] getPosition(int row, int col) {
         return 0;
     }
-    private static int[] playerLocation(){
+
+    public void updatePosition(int direction) {}
+
+    public void createSecretRoom() {}
+
+    public void createWall() {}
+    
+    public int[] nearestPlayer() {
         return 0;
     }
-    private static int[] dragonLocation(){
+    
+    public boolean nearTreasure(int row, int col){
         return 0;
     }
 }

@@ -1,24 +1,19 @@
 public class Square {
-    private static boolean hasNorthWall(){
-        return 0;
+
+    private boolean hasNorthWall, hasEastWall, hasSouthWall, hasWestWall = false;
+    private boolean isSecretRoom, isTreasureRoom;
+    private int occupant;
+
+
+    public void getSquareNumber() {
+        
     }
-    private static boolean hasEastWall(){
-        return 0;
-    }
-    private static boolean hasSouthWall(){
-        return 0;
-    }
-    private static boolean hasWestWall(){
+
+    public boolean getWallLocation() {
         return 0;
     }
 
-    private static int occupant(){
-        return 0;
-    }
-    private static boolean isSecretRoom(){
-        return 0;
-    }
-    private static boolean isTreasureRoom(){
-        return 0;
+    public int getOccupant(){
+        return occupant;
     }
 }

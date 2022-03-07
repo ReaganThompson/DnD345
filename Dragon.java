@@ -1,7 +1,9 @@
 import java.util.*;
 
 public class Dragon{
-    private static boolean isAwake(){
-        return 1;
-    }
+    private boolean isAwake = false;
+
+    public void wake(Board board){}
+    public void move(){}
+    public void attack(Piece piece){}
 }
