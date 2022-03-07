@@ -1,9 +1,11 @@
 import java.util.*;
+import java.util.Random;
 import Piece;
 
 public class Board{
 
-    private Square treasureRoom;
+    private Square[][] gameBoard;
+	private Square treasureRoom;
     private Player[] players;
     private Dragon dragon;
 
@@ -31,4 +33,22 @@ public class Board{
         //fetch and return location
         return 0;
     }
+	
+	public static void selectTreasureRoom(){
+		Random rng = new Random();
+		boolean validTreasureRoom = false;
+		while(selected == false){
+			//Selects Sqaure by randomly generating a row and col value
+			int rowVal = rng.nextInt(8);
+			int colVal = rng.nextInt(8);
+			Square TreasureRoomSelect  =  gameBoard[rowVal,colVal];
+			//check if Square is a Secret Room
+			if(TreasureRoomSelect.getIsSecretRoom == false){
+				this.treasureRoom = TreasureRoomSelect;
+				selected = true;
+			}
+		}
+				
+	}
+	
 }
