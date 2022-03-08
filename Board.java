@@ -11,7 +11,7 @@ public class Board{
 
     public static void main(String[] args){
         boolean game = true;
-        Square[][] gameBoard = new Piece[8][8];
+        Square[][] gameBoard = new Square[8][8];
         //populate gameBoard
             //can rooms be completely walled in?
             //how are walls decided?
@@ -34,21 +34,23 @@ public class Board{
         return 0;
     }
 	
-	public static void selectTreasureRoom(){
+	public void selectTreasureRoom(){
 		Random rng = new Random();
 		boolean validTreasureRoom = false;
-		while(selected == false){
+		while(validTreasureRoom == false){
 			//Selects Sqaure by randomly generating a row and col value
 			int rowVal = rng.nextInt(8);
 			int colVal = rng.nextInt(8);
-			Square TreasureRoomSelect  =  gameBoard[rowVal,colVal];
+			Square TreasureRoomSelect  =  gameBoard[rowVal][colVal];
 			//check if Square is a Secret Room
 			if(TreasureRoomSelect.getIsSecretRoom == false){
 				this.treasureRoom = TreasureRoomSelect;
-				selected = true;
+				validTreasureRoom = true;
+                //sets dragon's location 
+                dragon.location[0] = rowVal;
+                dragon.location[1] = colVal;
 			}
-		}
-				
+		}		
 	}
 	
 }

@@ -44,10 +44,10 @@ public class Square {
         return occupant;
     }
 
-    private static boolean getIsSecretRoom(){
+    private boolean getIsSecretRoom(){
         return isSecretRoom;
     }
-    private static boolean getIsTreasureRoom(){
+    private boolean getIsTreasureRoom(){
         return isTreasureRoom;
     }
 }

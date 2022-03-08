@@ -3,6 +3,7 @@ import java.util.*;
 public class Piece{
 
     private int IDnum;
+    protected int[] location;
 
     public static int getIDnum(){
         //return idnum
