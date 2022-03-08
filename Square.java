@@ -15,6 +15,11 @@ public class Square {
 
     private Piece occupant;
 
+    public Square(int row, int col) {
+        row = this.row;
+        col = this.col;
+    }
+
     private Square(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, boolean isSecretRoom, boolean isTreasureRoom){
         this.northWall = northWall;
         this.eastWall = eastWall;

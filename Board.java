@@ -21,9 +21,14 @@ public class Board{
         }
     }
 
-    private static int[] getTreasureRoomLocation(){
-        //return location
-        return treasureRoom;
+    public Board () {
+        this.gameBoard = new Square[8][8];
+        for(int row = 0; row < 8; row++) {
+            for(int col = 0; col < 8; col++) {
+                Square s = new Square(row,col);
+                gameBoard[row][col] = s;         
+            }
+        }
     }
 	
 	public void selectTreasureRoom(){
