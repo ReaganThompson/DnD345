@@ -4,8 +4,9 @@ public class Dragon extends Piece{
 
     private boolean awake;
     
-    public static boolean isAwake(){
+    public boolean isAwake(){
         //check conditions and update awake, then return
         return awake;
     }
+
 }

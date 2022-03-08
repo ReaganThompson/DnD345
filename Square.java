@@ -10,6 +10,9 @@ public class Square {
     private boolean isSecretRoom;
     private boolean isTreasureRoom;
 
+    private int row;
+    private int col;
+
     private Piece occupant;
 
     private Square(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, boolean isSecretRoom, boolean isTreasureRoom){
@@ -44,7 +47,7 @@ public class Square {
         return occupant;
     }
 
-    private boolean getIsSecretRoom(){
+    public boolean getIsSecretRoom(){
         return isSecretRoom;
     }
     private boolean getIsTreasureRoom(){
