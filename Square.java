@@ -1,7 +1,4 @@
-import Player;
-import Dragon;
-
-public class Square {
+ipublic class Square {
 
     private boolean northWall;
     private boolean eastWall;
@@ -9,18 +6,14 @@ public class Square {
     private boolean westWall;
     private boolean isSecretRoom;
     private boolean isTreasureRoom;
-
-    private int row;
-    private int col;
-
+    private boolean isOccupied;
     private Piece occupant;
 
-    public Square(int row, int col) {
-        row = this.row;
-        col = this.col;
-    }
+    public Square() {};
 
-    private Square(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, boolean isSecretRoom, boolean isTreasureRoom){
+    public Square(boolean northWall, boolean eastWall,
+                   boolean southWall, boolean westWall,
+                   boolean isSecretRoom, boolean isTreasureRoom) {
         this.northWall = northWall;
         this.eastWall = eastWall;
         this.southWall = southWall;
@@ -29,33 +22,49 @@ public class Square {
         this.isTreasureRoom = isTreasureRoom;
     }
 
-    private static boolean hasNorthWall(){
+    public boolean hasNorthWall(){
         return northWall;
     }
-    private static boolean hasEastWall(){
+
+    public boolean hasEastWall(){
         return eastWall;
     }
-    private static boolean hasSouthWall(){
+
+    public boolean hasSouthWall(){
         return southWall;
     }
-    private static boolean hasWestWall(){
+
+    public boolean hasWestWall(){
         return westWall;
     }
 
-    private static int occupant(){
-        //return occupant
+    public Piece getOccupant() {
         return occupant;
     }
 
-    private static int occupant(Player p){
-        //update occupant and return
-        return occupant;
+    /*
+    Set the occupancy of this tile with the given Piece object;
+    If the object is null, the tile becomes empty.
+     */
+    public void setOccupant(Piece p) {
+        if (p != null) {
+            occupant = p;
+            isOccupied = true;
+        } else {
+            occupant = null;
+            isOccupied = false;
+        }
     }
 
-    public boolean getIsSecretRoom(){
+    public boolean isSecretRoom(){
         return isSecretRoom;
     }
-    private boolean getIsTreasureRoom(){
+
+    public boolean isTreasureRoom(){
         return isTreasureRoom;
+    }
+
+    public boolean isOccupied(){
+        return isOccupied;
     }
 }

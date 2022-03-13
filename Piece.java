@@ -1,23 +1,21 @@
 import java.util.*;
 
-public class Piece{
+public class Piece {
 
-    private int IDnum;
-    protected int row;
-    protected int col;
+    private int id;
 
-    public static int getIDnum(){
-        //return idnum
-        return 0;
+    public Piece() {};
+
+    public Piece(int id) {
+        this.id = id;
     }
 
-    public int[] getLocation(){
-        return location;
+    public int getId() {
+        return id;
     }
-    
 
-    public static int[] moveTo(int[] newLocation){
-        //move piece to new location and return new location.
-        return newLocation;
+    public void setId(int id) {
+        this.id = id;
     }
+
 }
