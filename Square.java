@@ -1,4 +1,4 @@
-ipublic class Square {
+public class Square {
 
     private boolean northWall;
     private boolean eastWall;
