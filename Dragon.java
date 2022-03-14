@@ -1,9 +1,12 @@
 import java.util.*;
 
-public class Dragon{
-    private boolean isAwake = false;
+public class Dragon extends Piece{
 
-    public void wake(Board board){}
-    public void move(){}
-    public void attack(Piece piece){}
+    private boolean awake;
+    
+    public boolean isAwake(){
+        //check conditions and update awake, then return
+        return awake;
+    }
+
 }

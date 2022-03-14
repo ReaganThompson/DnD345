@@ -1,18 +1,27 @@
 import java.util.*;
 
-public class Player{
-    private int health, moveCount, attackCount;
-    private boolean hasTreasure;
+public class Player extends Piece{
 
-    public int getHealth(){
+    private int health;
+    private int moves;
+    private boolean treasure;
+    private int attacks;
+
+    public static int getHealth(int change){
+        //update with change and then return value
         return health;
     }
-    public int getMoveCount(){
-        return moveCount;
+    public static int getMoveCount(int change){
+        //update with change and then return value
+        return moves;
     }
-    public boolean isDead(){
-        return 0;
+    public static int getAttackCount(int change){
+        //update with change and then return value
+        return attacks;
     }
-    public void pickTreasure(Board board){}
-    public void attack(Piece piece){}
+    public static boolean hasTreasure(int change){
+        //update with change (-1 = false, 0 = no change, 1 = true) and then return value
+        return treasure;
+    }
+    
 }
