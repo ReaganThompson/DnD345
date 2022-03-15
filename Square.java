@@ -1,8 +1,8 @@
-hbimport Player;
+//hbimport Player;
 
 import javax.swing.text.html.HTMLDocument.RunElement;
 
-import Dragon;
+//import Dragon;
 
 public class Square {
 
