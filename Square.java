@@ -1,4 +1,7 @@
-import Player;
+hbimport Player;
+
+import javax.swing.text.html.HTMLDocument.RunElement;
+
 import Dragon;
 
 public class Square {
@@ -15,30 +18,32 @@ public class Square {
 
     private Piece occupant;
 
-    public Square(int row, int col) {
-        row = this.row;
-        col = this.col;
+    public Square(int row, int col) 
+    {
+        this.row = row;
+        this.col = col;
     }
 
-    private Square(boolean northWall, boolean eastWall, boolean southWall, boolean westWall, boolean isSecretRoom, boolean isTreasureRoom){
-        this.northWall = northWall;
-        this.eastWall = eastWall;
-        this.southWall = southWall;
-        this.westWall = westWall;
-        this.isSecretRoom = isSecretRoom;
-        this.isTreasureRoom = isTreasureRoom;
+    public void setTreasureRoom()
+    {
+        isTreasureRoom = true;
     }
 
-    private static boolean hasNorthWall(){
+    public void setSecretRoom()
+    {
+        isTreasureRoom = true;
+    }
+
+    private boolean hasNorthWall(){
         return northWall;
     }
-    private static boolean hasEastWall(){
+    private boolean hasEastWall(){
         return eastWall;
     }
-    private static boolean hasSouthWall(){
+    private boolean hasSouthWall(){
         return southWall;
     }
-    private static boolean hasWestWall(){
+    private boolean hasWestWall(){
         return westWall;
     }
 
@@ -57,5 +62,69 @@ public class Square {
     }
     private boolean getIsTreasureRoom(){
         return isTreasureRoom;
+    }
+
+    //0 north, 1 south, 2 east, 3 west
+    public void setWall(int direction)
+    {
+        if(direction == 0)
+        {
+            this.northWall = true;
+        }
+        else if(direction == 1)
+        {
+            this.southWall = true;
+        }
+        else if(direction == 2)
+        {
+            this.eastWall = true;
+        }
+        else if(direction == 3)
+        {
+            this.westWall = true;
+        }
+    }
+
+    public boolean getWall(int direction)
+    {
+        //north
+        if(direction == 0)
+        {
+            return northWall;
+        }
+        //south
+        else if(direction == 1)
+        {
+            return southWall;
+        }
+        //east
+        else if(direction == 2)
+        {
+            return eastWall;
+        }
+        //west
+        else if(direction == 3)
+        {
+            return westWall;
+        }
+        return false;
+    }
+
+    public int getCol()
+    {
+        return this.col;
+    }
+
+    public void clearWalls()
+    {
+        northWall = false;
+        southWall = false;
+        eastWall = false;
+        westWall = false;
+    }
+
+    public int getRow()
+    {
+        return this.row;
     }
 }
