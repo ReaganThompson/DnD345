@@ -1,4 +1,3 @@
-package dndJava;
 import com.wwu.graphics.*;
 import com.wwu.graphics.BoardGraphicsInf;
 import com.wwu.graphics.GameGraphics;

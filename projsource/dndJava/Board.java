@@ -14,14 +14,9 @@ public class Board{
     private static Square secretOne = null;
     private static Square secretTwo = null;
 
-    public static void main(String[] args){
-        System.out.println(Math.random());
-        boolean game = true;
+    public Board(){
         gameBoard = new Square[8][8];
         PopulateBoard();
-        selectSecretRoom(4, 2, 1);
-        //choose treasure room and 1-2 secret rooms.
-        //while game
     }
 
     public static void PopulateBoard(){
