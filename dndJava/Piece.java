@@ -1,4 +1,3 @@
-package dndJava;
 import java.util.*;
 
 public class Piece{

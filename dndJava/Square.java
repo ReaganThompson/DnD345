@@ -1,7 +1,3 @@
-package dndJava;
-import dndJava.Player;
-import dndJava.Dragon;
-
 public class Square {
 
     private boolean northWall;

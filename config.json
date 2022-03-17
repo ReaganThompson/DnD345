@@ -3,7 +3,7 @@
   "ResetButton" : "false",
   "NextButton" : "true",
   "InfoArea" : "false",
-  "ImagePath" : "src/resources/",
+  "ImagePath" : "graphicspackage/src/resources/",
   "Images": {
     "TILE" : "tile.png",
     "WALL" : "wall.png",

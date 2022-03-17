@@ -1,4 +1,5 @@
 import com.wwu.graphics.*;
+
 import java.util.Scanner;
 
 public class GraphicsTestDriver implements BoardGraphicsInf

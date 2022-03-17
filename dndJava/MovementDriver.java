@@ -1,4 +1,3 @@
-import com.wwu.graphics.*;
 import com.wwu.graphics.BoardGraphicsInf;
 import com.wwu.graphics.GameGraphics;
 import com.wwu.graphics.GraphicsClickTypes;
@@ -14,8 +13,6 @@ public class MovementDriver implements BoardGraphicsInf
         public boolean east = false;
         public boolean west = false;
     }
-
-
 
     private HashMap<Integer, tileStat> tileMap = null;
     private  GameGraphics gameGraphics = null;

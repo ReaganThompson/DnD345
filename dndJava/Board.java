@@ -1,9 +1,5 @@
-package dndJava;
 import java.util.*;
 import java.util.Random;
-
-import dndJava.Piece;
-import dndJava.Square;
 
 public class Board{
 

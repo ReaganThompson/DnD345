@@ -1,11 +1,16 @@
 {
     "java.project.sourcePaths": [
-        "projsource"
+        "dndJava"
     ],
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "projsource\\graphicspackage\\lib\\GameGraphics.jar",
-        "graphicspackage\\lib\\json_simple-1.1.jar",
-        "graphicspackage\\lib\\GameGraphics.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "projsource\\graphicspackage\\lib\\GameGraphics.jar",
+            "graphicspackage\\lib\\json_simple-1.1.jar",
+            "graphicspackage\\lib\\GameGraphics.jar"
+        ],
+        "exclude": [
+            "graphicspackage/lib/json_simple-1.1.jar"
+        ]
+    }
 }
