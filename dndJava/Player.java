@@ -23,5 +23,9 @@ public class Player extends Piece{
         //update with change (-1 = false, 0 = no change, 1 = true) and then return value
         return treasure;
     }
+
+    public void resetMoves(){
+        moves = (2 + (2*health));
+    }
     
 }

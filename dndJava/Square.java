@@ -19,17 +19,20 @@ public class Square {
         this.col = col;
     }
 
-    public boolean hasNorthWall(){
-        return northWall;
-    }
-    public boolean hasEastWall(){
-        return eastWall;
-    }
-    public boolean hasSouthWall(){
-        return southWall;
-    }
-    public boolean hasWestWall(){
-        return westWall;
+    public boolean hasWall(char dir){
+        switch(dir){
+            case 'n':
+                return northWall;
+            case 'e':
+                return eastWall;
+            case 's':
+                return southWall;
+            case 'w':
+                return westWall;
+            default:
+                System.out.println("Error: hasWall invalid dir selected");
+                return false;
+        }
     }
 
     public int[] getLocation(){
