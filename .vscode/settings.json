@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "GameGraphics-V0.5/lib/GameGraphics.jar",
+        "GameGraphics-V0.5/lib/json_simple-1.1.jar"
+    ]
+}

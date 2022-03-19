@@ -1,6 +1,7 @@
 import com.wwu.graphics.*;
 import java.util.Scanner;
 
+
 public class GameController implements BoardGraphicsInf
 {
     private Board gameBoard;
@@ -141,7 +142,7 @@ public class GameController implements BoardGraphicsInf
             gg.changeTileImage(secretRoom.getCol(), secretRoom.getRow(), "HERO2");
         }
         //chooses treasure room and generates walls
-        gameBoard.gameBoardSetup();
+        //gameBoard.gameBoardSetup();
         
         //randomly chooses treasure room.
         //gameBoard.selectTreasureRoom();
