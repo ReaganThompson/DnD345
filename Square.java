@@ -53,13 +53,13 @@ public class Square {
         }
     }
 
-    public void increaseOccupant() {
+    public void increaseOccupant() {//increase the number of pieces on a square
         if (numOccupant < 3) {
             numOccupant++;
         }
     }
 
-    public void decreaseOccupant() {
+    public void decreaseOccupant() {//decrease the number of pieces on a square
         if (numOccupant > 0) {
             numOccupant--;
         }
