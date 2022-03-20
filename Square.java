@@ -14,7 +14,7 @@ public class Square {
     private boolean isTreasureRoom;
     private int row;
     private int col;
-    private int occupant = 0; //0, 1 for player and 2 for dragon
+    private int numOccupant = 0;
 
     public Square(int row, int col)
     {
@@ -46,7 +46,7 @@ public class Square {
     }
 
     public boolean isOccupied() {
-        if (occupant > 0) {
+        if (numOccupant > 0) {
             return true;
         } else {
             return false;
@@ -54,14 +54,14 @@ public class Square {
     }
 
     public void increaseOccupant() {
-        if (occupant < 4) {
-            occupant++;
+        if (numOccupant < 3) {
+            numOccupant++;
         }
     }
 
     public void decreaseOccupant() {
-        if (occupant > 0) {
-            occupant--;
+        if (numOccupant > 0) {
+            numOccupant--;
         }
     }
 

@@ -6,7 +6,7 @@ public class GameController implements BoardGraphicsInf
     private Board gameBoard;
     private GameGraphics gg;
     private boolean twoPlayer;
-    private boolean square2player;
+    private boolean square2player;//for when 2 players occupy the same square
 
     //Game can be in Setup Mode or Game Play Mode
     private gameSetupState setupState;
@@ -105,7 +105,7 @@ public class GameController implements BoardGraphicsInf
     {
         setupState = setupState.playerSetup;
         gg.addTextToInfoArea("---");
-        gg.addTextToInfoArea("Confirm w/t Next");
+        gg.addTextToInfoArea("Confirm wt Next");
         gg.addTextToInfoArea("Choose secret room!");
     }
 
@@ -116,7 +116,6 @@ public class GameController implements BoardGraphicsInf
         this.gg.changeTileImage(secretRoom.getCol(), secretRoom.getRow(), "HERO1");
         this.gameBoard.setPlayerLocation(secretRoom.getRow(),secretRoom.getCol(),0);
         this.pendingSecretRoomSelect = null;
-
         // move to next state
         this.setupState = gameSetupState.finalizeSetup;
         this.gg.addTextToInfoArea("---");
@@ -147,7 +146,6 @@ public class GameController implements BoardGraphicsInf
         this.gg.changeTileImage(room.getCol(), room.getRow(), "ANTAGONIST");
         //generate walls
         //setupWalls();
-
         setupState = gameSetupState.complete;
         gpState = gamePlayState.player1Move;
         this.gg.addTextToInfoArea("---");
@@ -155,6 +153,7 @@ public class GameController implements BoardGraphicsInf
         this.gg.addTextToInfoArea("Player 1, move!");
     }
 
+    //setting up walls on the game board
     private void setupWalls() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -197,7 +196,8 @@ public class GameController implements BoardGraphicsInf
                 //check for wall
                 if (!square2player) {
                     gg.changeTileImage(currentCol, currentRow, "TILE");
-                } else {
+                } else {//if two players are on the same square
+                  //the current player stops moving and the other player has the turn
                     if (gpState == gamePlayState.player1Move) {
                         gg.changeTileImage(currentCol, currentRow, "HERO2");
                     } else {
@@ -213,11 +213,12 @@ public class GameController implements BoardGraphicsInf
                 {
                     gg.changeTileImage(pendingCol, pendingRow, "HERO2");
                 }
+                //check if the chosen tile is occupied
                 boolean occupied = gameBoard.getRoom(pendingRow, pendingCol).isOccupied();
                 gameBoard.setPlayerLocation(pendingRow, pendingCol, playerNum);
                 //subtracts move from moveCount
                 gameBoard.getPlayer(playerNum).useMove();
-                if (twoPlayer && occupied) {
+                if (twoPlayer && occupied) {//if the tile is occupied, the other player has the turn
                     square2player = true;
                     int currentPlayer = -1;
                     if (gpState == gamePlayState.player1Move) {
@@ -225,7 +226,7 @@ public class GameController implements BoardGraphicsInf
                     } else if (gpState == gamePlayState.player2Move) {
                         currentPlayer = 1;
                     }
-                    if (gameBoard.getPlayer(1 - currentPlayer).hasTreasure()) {
+                    if (gameBoard.getPlayer(1 - currentPlayer).hasTreasure()) {//attack if a player has the treasure
                         gpState = gamePlayState.playerAttack;
                     } else {
                         if (gpState == gamePlayState.player1Move) {
@@ -244,7 +245,7 @@ public class GameController implements BoardGraphicsInf
                     }
                 }
             }
-            else
+            else //for invalid move selection
             {
                 gg.addTextToInfoArea("---");
                 gg.addTextToInfoArea("1 tile at a time!");

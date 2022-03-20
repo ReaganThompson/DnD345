@@ -11,7 +11,7 @@ import java.util.Random;
 public class Board{
 
     private Square[][] gameBoard;
-	private Square treasureRoom;
+	  private Square treasureRoom;
     private Square[] secretRooms;
     private Player[] players;
     private Dragon dragon;
@@ -68,14 +68,14 @@ public class Board{
 			int rowVal = rng.nextInt(8);
 			int colVal = rng.nextInt(8);
 			Square room  =  gameBoard[rowVal][colVal];
-			//check if Square is a Secret Room
+			//check if Square is a Secret Room or an occupied room
 			if(room.getIsSecretRoom() == false && room.isOccupied() == false){
 				this.treasureRoom = room;
-                room.setTreasureRoom();
+        room.setTreasureRoom();
 				validTreasureRoom = true;
-                //sets dragon's location
-                dragon.row = rowVal;
-                dragon.col = colVal;
+        //sets dragon's location
+        dragon.row = rowVal;
+        dragon.col = colVal;
 			}
 		}
 	}

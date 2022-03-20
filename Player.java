@@ -11,8 +11,8 @@ public class Player extends Piece{
 
     public Player()
     {
-        id = playerCount++;
-        playerCount %= 2;
+        id = playerCount++; //each creation of the Player object increases id
+        playerCount %= 2;//id is either 0 or 1
         lives = 3;
         setMoves();
     }
