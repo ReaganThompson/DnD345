@@ -2,10 +2,9 @@ import java.util.*;
 
 public class Dragon extends Piece{
 
-    private boolean awake;
-    
+    private boolean awake = false;
+
     public boolean isAwake(){
-        //check conditions and update awake, then return
         return awake;
     }
 

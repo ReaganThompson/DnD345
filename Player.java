@@ -8,6 +8,7 @@ public class Player extends Piece{
     private int lives;
     private int moves;
     private static int playerCount = 0;
+    private boolean attackedByDragon;
 
     public Player()
     {
@@ -17,6 +18,17 @@ public class Player extends Piece{
         setMoves();
     }
 
+    public boolean isAttackedByDragon() {
+        return attackedByDragon;
+    }
+
+    public void setAttackedByDragon(boolean attackedByDragon) {
+        this.attackedByDragon = attackedByDragon;
+        if (lives > 0) {
+            lives -= 2;
+        }
+    }
+    
     public int getIDNum(){
         return id;
     }
