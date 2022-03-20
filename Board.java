@@ -1,11 +1,10 @@
 import java.util.*;
 import java.util.Random;
-import Piece;
 
 
-//Board class responsibilities: 
+//Board class responsibilities:
 // -keeps track of the Piece's location
-// -keeps track of special rooms 
+// -keeps track of special rooms
 //
 //Questions: Will this class facilitate movement of pieces or just used to store information about pieces?
 
@@ -22,7 +21,7 @@ public class Board{
     public final int Left = 2;
     public final int Right = 3;
 
-    
+
     //private Wall[] walls;
 
     /*
@@ -39,12 +38,12 @@ public class Board{
     }
     */
 
-    public Board() 
+    public Board()
     {
         this.gameBoard = new Square[8][8];
-        for(int row = 0; row < 8; row++) 
+        for(int row = 0; row < 8; row++)
         {
-            for(int col = 0; col < 8; col++) 
+            for(int col = 0; col < 8; col++)
             {
                 Square s = new Square(row, col);
                 this.gameBoard[row][col] = s;
@@ -60,7 +59,7 @@ public class Board{
         dragon = new Dragon();
 
     }
-	
+
 	public void selectTreasureRoom(){
 		Random rng = new Random();
 		boolean validTreasureRoom = false;
@@ -68,24 +67,26 @@ public class Board{
 			//Selects Sqaure by randomly generating a row and col value
 			int rowVal = rng.nextInt(8);
 			int colVal = rng.nextInt(8);
-			Square treasureRoomSelect  =  gameBoard[rowVal][colVal];
+			Square room  =  gameBoard[rowVal][colVal];
 			//check if Square is a Secret Room
-			if(treasureRoomSelect.getIsSecretRoom() == false){
-				this.treasureRoom = treasureRoomSelect;
-                treasureRoomSelect.setTreasureRoom();
+			if(room.getIsSecretRoom() == false && room.isOccupied() == false){
+				this.treasureRoom = room;
+                room.setTreasureRoom();
 				validTreasureRoom = true;
-                //sets dragon's location 
+                //sets dragon's location
                 dragon.row = rowVal;
                 dragon.col = colVal;
 			}
-		}		
+		}
 	}
 
+    public Square getTreasureRoom() {
+        return treasureRoom;
+    }
 
     public void generateWalls()
     {
         Random rng = new Random();
-        
         //will generate random number between 20 and 30;
         int howManyWalls = rng.nextInt(11)+20;
         for(int i = 0; i < howManyWalls; i++)
@@ -101,8 +102,8 @@ public class Board{
                 boolean invalidNorthWallCheck = (rowVal == 0 && direction == 0);
                 boolean invalidSouthWallCheck = (rowVal == 7 && direction == 1);
                 boolean invalidEastWallCheck  = (colVal == 7 && direction == 2);
-                boolean invalidWestWallCheck  = (colVal == 0 && direction == 3); 
-                
+                boolean invalidWestWallCheck  = (colVal == 0 && direction == 3);
+
                 boolean wallAlreadyExists = gameBoard[rowVal][colVal].getWall(direction);
 
                 if(!invalidNorthWallCheck && !invalidSouthWallCheck && !invalidEastWallCheck && !invalidWestWallCheck && !wallAlreadyExists)
@@ -110,7 +111,7 @@ public class Board{
                     System.out.println("row: " + rowVal + " col: " + colVal);
                     validWall = true;
                     //set opposing room wall
-                    //if north wall set 
+                    //if north wall set
                     if(direction == 0)
                     {
                         Square opposingRoom = gameBoard[rowVal-1][colVal];
@@ -124,7 +125,7 @@ public class Board{
                         //set north wall
                         opposingRoom.setWall(0);
                     }
-                    //if east wall is set 
+                    //if east wall is set
                     else if(direction == 2)
                     {
                         Square opposingRoom = gameBoard[rowVal][colVal+1];
@@ -157,9 +158,9 @@ public class Board{
                 Square move = possibleMoves[i];
                 if(move != null)
                 {
-                    //when do I backtrack? 
+                    //when do I backtrack?
                     openPathExists(move, to);
-                }  
+                }
             }
             return false;
         }
@@ -172,7 +173,6 @@ public class Board{
         double rowDifference = to.getRow() - from.getRow();
 
         return colDifference/rowDifference;
-
     }
 
     public void getLeftSquareCoordinates(Square current)
@@ -184,13 +184,13 @@ public class Board{
     {
         if(current.getRow() != 0 && !current.getWall(Left))
         {
-            //minus 1 row means moving left 
+            //minus 1 row means moving left
             return gameBoard[current.getRow()-1][current.getCol()];
         }
         return null;
     }
-    
-    
+
+
     public Square[] movementChoices(Square from, Square to)
     {
         //is moving up an option?
@@ -221,8 +221,7 @@ public class Board{
             possibleMoves[3] = s;
             distanceFromGoal[2] = calculateDistance(s, to);
         }
-
-        //order the moves based on distance 
+        //order the moves based on distance
         for(int i = 1; i < 4; i++)
         {
             for(int j = i; j > 0; j--)
@@ -233,7 +232,6 @@ public class Board{
                     double tempD = distanceFromGoal[j];
                     distanceFromGoal[j] = distanceFromGoal[j-1];
                     distanceFromGoal[j-1] = tempD;
-
                     Square tempS= possibleMoves[j];
                     possibleMoves[j] = possibleMoves[j-1];
                     possibleMoves[j-1] = tempS;
@@ -252,7 +250,6 @@ public class Board{
         {
             selectTreasureRoom();
             generateWalls();
-
             while(!openPathExists(secretRooms[0], treasureRoom))
             {
                 //clear walls
@@ -265,19 +262,11 @@ public class Board{
                 }
                 //generate walls
                 generateWalls();
-
             }
-
-            
-            
-
         }
-        
-
-
     }
 
-    //player secretRoom facilitates and playerNum facilitates multi player modes 
+    //player secretRoom facilitates and playerNum facilitates multi player modes
     public void setSecretRoom(Square s, int playerNum)
     {
         s.setSecretRoom();
@@ -289,8 +278,6 @@ public class Board{
         return secretRooms[playerNum];
     }
 
-
-
     public Square getRoom(int row, int col)
     {
         Square s = gameBoard[row][col];
@@ -300,7 +287,11 @@ public class Board{
 
     public void setPlayerLocation(int row, int col, int playerNum)
     {
+        int currentRow = players[playerNum].row;
+        int currentCol = players[playerNum].col;
+        gameBoard[currentRow][currentCol].decreaseOccupant();
         players[playerNum].setLocation(row, col);
+        gameBoard[row][col].increaseOccupant();
     }
 
     public Player getPlayer(int playerNum)
@@ -312,13 +303,10 @@ public class Board{
     {
         int playerRow = players[playerNum].row;
         int playerCol = players[playerNum].col;
-
         int roomRow = pendingRoomSelect.getRow();
         int roomCol = pendingRoomSelect.getCol();
-
         int rowDifference = Math.abs(playerRow-roomRow);
         int colDifference = Math.abs(playerCol-roomCol);
-
         if(rowDifference + colDifference != 1)
         {
             return false;
@@ -330,7 +318,3 @@ public class Board{
     {
         players[playerNum] = p;
     }
-
-
-	
-}

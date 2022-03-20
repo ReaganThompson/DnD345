@@ -1,4 +1,4 @@
-//hbimport Player;
+///hbimport Player;
 
 import javax.swing.text.html.HTMLDocument.RunElement;
 
@@ -12,13 +12,11 @@ public class Square {
     private boolean westWall;
     private boolean isSecretRoom;
     private boolean isTreasureRoom;
-
     private int row;
     private int col;
+    private int occupant = 0; //0, 1 for player and 2 for dragon
 
-    private Piece occupant;
-
-    public Square(int row, int col) 
+    public Square(int row, int col)
     {
         this.row = row;
         this.col = col;
@@ -31,35 +29,46 @@ public class Square {
 
     public void setSecretRoom()
     {
-        isTreasureRoom = true;
+        isSecretRoom = true;
     }
 
-    private boolean hasNorthWall(){
+    public boolean hasNorthWall(){
         return northWall;
     }
-    private boolean hasEastWall(){
+    public boolean hasEastWall(){
         return eastWall;
     }
-    private boolean hasSouthWall(){
+    public boolean hasSouthWall(){
         return southWall;
     }
-    private boolean hasWestWall(){
+    public boolean hasWestWall(){
         return westWall;
     }
 
-    private static int occupant(){
-        //return occupant
-        return occupant;
+    public boolean isOccupied() {
+        if (occupant > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    private static int occupant(Player p){
-        //update occupant and return
-        return occupant;
+    public void increaseOccupant() {
+        if (occupant < 4) {
+            occupant++;
+        }
+    }
+
+    public void decreaseOccupant() {
+        if (occupant > 0) {
+            occupant--;
+        }
     }
 
     public boolean getIsSecretRoom(){
         return isSecretRoom;
     }
+
     private boolean getIsTreasureRoom(){
         return isTreasureRoom;
     }

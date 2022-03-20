@@ -2,40 +2,41 @@ import java.util.*;
 
 public class Player extends Piece{
 
+    private int id;
     private int health;
     private boolean treasure;
     private int lives;
-
     private int moves;
+    private static int playerCount = 0;
 
     public Player()
     {
+        id = playerCount++;
+        playerCount %= 2;
         lives = 3;
         setMoves();
     }
 
-    
-    public static int getHealth(int change){
+    public int getIDNum(){
+        return id;
+    }
+
+    public int getHealth(int change){
         //update with change and then return value
         return health;
     }
-    public static int getMoveCount(int change){
+
+    public int getMoveCount(int change){
         //update with change and then return value
         return moves;
     }
-    public static int getAttackCount(int change){
-        //update with change and then return value
-        return attacks;
-    }
-    public static boolean hasTreasure(int change){
+
+    public boolean hasTreasure(){
         //update with change (-1 = false, 0 = no change, 1 = true) and then return value
         return treasure;
     }
 
-    public void move()
-    {
-        
-    }
+    public void move() {}
 
     public void setMoves()
     {
@@ -57,11 +58,7 @@ public class Player extends Piece{
         return moves;
     }
 
-
     public void useMove()
     {
         moves--;
     }
-
-         
-}

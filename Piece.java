@@ -1,18 +1,15 @@
 import java.util.*;
 
-//Player and Dragon is a Piece 
+//Player and Dragon is a Piece
 public abstract class Piece{
 
-    private int id;
     protected int row;
     protected int col;
 
-    public static int getIDnum(){
-        //return idnum
-        return 0;
-    }
-
     public int[] getLocation(){
+        int[] location = new int[2];
+        location[0] = row;
+        location[1] = col;
         return location;
     }
 
@@ -22,7 +19,6 @@ public abstract class Piece{
     {
         this.row = row;
         this.col = col;
-
     }
 
     public static int[] moveTo(int[] newLocation){
