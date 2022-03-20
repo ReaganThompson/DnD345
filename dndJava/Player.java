@@ -4,6 +4,7 @@ public class Player extends Piece{
 
     private int health;
     private int moves;
+    private int strength = 100;
     private static boolean treasure;
     private static int attacks;
 
@@ -13,23 +14,29 @@ public class Player extends Piece{
         resetMoves();
     }
 
-    public static int getHealth(int change){
-        //update with change and then return value
-        return health;
+    //CONSTRUCTORS
+    public int getHealth()
+    {
+        return this.health;
     }
-    public static int getMoveCount(int change){
-        //update with change and then return value
-        return moves;
+    public int getAttackCount()
+    {
+        return this.attacks;
     }
-    public static int getAttackCount(int change){
-        //update with change and then return value
-        return attacks;
+    public int getMoves()
+    {
+        return this.moves;
+    }  
+    public int getStrength()
+    {
+        return this.strength;
     }
-    public static boolean hasTreasure(int change){
-        //update with change (-1 = false, 0 = no change, 1 = true) and then return value
-        return treasure;
+    public boolean hasTreasure()
+    {
+        return this.treasure;
     }
 
+    
     public void resetMoves()
     {
         this.moves = (2 + (2*health));
@@ -38,13 +45,12 @@ public class Player extends Piece{
     public void moveMade()
     {
         this.moves--;
+        this.strength--;
     }
 
-    public int getMoves()
-    {
-        return this.moves;
+    public void attacked(){
+        this.health--;
     }
-
-
+    
     
 }

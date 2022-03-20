@@ -1,7 +1,6 @@
 import com.wwu.graphics.*;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.lang.model.util.ElementScanner14;
 
@@ -21,7 +20,7 @@ public class GameController implements BoardGraphicsInf
     //player move select
     private int[] pmSelect;
     
-     private int activePlayer;
+    private int activePlayer;
 
     public static void main(String args[])
     {
@@ -185,7 +184,7 @@ public class GameController implements BoardGraphicsInf
         {
             //This coniditon is real messy. Change if time allows.
             //WakeupDragon takes player location and dragon location, check to se if player is within 3 moves, if so it wakes up the dragon and returns boolean true through which we print message.
-            if(gb.getDragon().wakeUpDragon(gb.getPlayerLoc(activePlayer),gb.dragonLoc ))
+            if(gb.getDragon().wakeUpDragon(gb.getPlayerLoc(activePlayer)))
             {
                 gg.addTextToInfoArea("DRAGON IS AWAKE!");
             }
@@ -231,29 +230,29 @@ public class GameController implements BoardGraphicsInf
         int colDifference = (currentLoc[1]-selectedMove[1]);
 
         char[] moveDir = new char[2];
-            //moving up
-            if(rowDifference > 0) moveDir = new char[] {'n', 's'};
-            //moving down
-            else if(rowDifference < 0) moveDir = new char[] {'s', 'n'};
-            //moving left
-            else if(colDifference > 0) moveDir = new char[] {'w', 'e'};
-            //moving right
-            else if(colDifference < 0) moveDir = new char[] {'e', 'w'};
-            
-            Square[][] board = gb.getBoard();
-            Square currentSquare = board[currentLoc[0]][currentLoc[1]];
-            Square destSquare = board[pmSelect[0]][pmSelect[1]];
+        //moving up
+        if(rowDifference > 0) moveDir = new char[] {'n', 's'};
+        //moving down
+        else if(rowDifference < 0) moveDir = new char[] {'s', 'n'};
+        //moving left
+        else if(colDifference > 0) moveDir = new char[] {'w', 'e'};
+        //moving right
+        else if(colDifference < 0) moveDir = new char[] {'e', 'w'};
+        
+        Square[][] board = gb.getBoard();
+        Square currentSquare = board[currentLoc[0]][currentLoc[1]];
+        Square destSquare = board[pmSelect[0]][pmSelect[1]];
 
-                if(currentSquare.hasWall(moveDir[0]) || destSquare.hasWall(moveDir[1]))
-            {
-                if(moveDir[0] == 'n') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.NORTH,true);
-                else if(moveDir[0] == 's') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.SOUTH,true);
-                else if(moveDir[0] == 'e') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.EAST,true);
-                else if(moveDir[0] == 'w') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.WEST,true);
-                
-                return false;
-            }
-            return true;
+            if(currentSquare.hasWall(moveDir[0]) || destSquare.hasWall(moveDir[1]))
+        {
+            if(moveDir[0] == 'n') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.NORTH,true);
+            else if(moveDir[0] == 's') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.SOUTH,true);
+            else if(moveDir[0] == 'e') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.EAST,true);
+            else if(moveDir[0] == 'w') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.WEST,true);
+            
+            return false;
+        }
+        return true;
     }
 
     public void dragonTurnToMove()
@@ -263,7 +262,7 @@ public class GameController implements BoardGraphicsInf
 
         //find target player
         //move dragon
-       
+
         //if dragon is not awake 
         if(!gb.getDragon().isAwake())
         {
@@ -274,7 +273,7 @@ public class GameController implements BoardGraphicsInf
         {
             Player[] players = {gb.getPlayer(1), gb.getPlayer(2)};
             Dragon dragon = gb.getDragon();
-            //returns player num of targer either 1 or 2
+            //returns player num of target; either 1 or 2
             int TargetPlayerNum = dragon.findPlayerToTarget(players);
             
             int[] targetPlayerLoc = gb.getPlayerLoc(TargetPlayerNum);
@@ -284,23 +283,67 @@ public class GameController implements BoardGraphicsInf
             int[] newDragonMove = dragon.dragonMove(targetPlayerLoc, dragonLoc);
             //updates dragon location
             gb.dragonLoc = newDragonMove;
+            
+            //Check if future dragon location tile is already occupied...
+            //Is there more than 1 piece on the tile?
+            if((Arrays.equals(gb.getPlayerLoc(1), gb.dragonLoc)) && (Arrays.equals(gb.getPlayerLoc(2), gb.dragonLoc)))
+            { 
+                //If so, attack whoever has the lower strength
+                if(gb.getPlayer(1).getStrength() > gb.getPlayer(2).getStrength()){
+                    //Player 1 is stronger than Player 2; Dragon attacks Player 2
+                    attackPlayer(2);
+                }else{
+                    //Player 2 is stronger than Player 1; Dragon attacks Player 1
+                    attackPlayer(1);
+                }
 
+            }
+
+            else if(Arrays.equals(gb.getPlayerLoc(1), gb.dragonLoc))
+            {
+                attackPlayer(1);
+            }
+
+            else if(Arrays.equals(gb.getPlayerLoc(2), gb.dragonLoc))
+            {
+                attackPlayer(2);
+            }
         }
-        //if dragon found player dragon attacks 
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
+    //HELPER FUNCTION - dragonTurnToMove()
+    public void attackPlayer(int PlayerNum){
+        gb.getPlayer(PlayerNum).attacked();
+        if(gb.getPlayer(PlayerNum).getHealth() <= 0){
+            //Player 1 is out of health, they're eliminated
+        }
+    }
+
+    public void WarriorAttack(){
+        // Is one of the players carrying the treasure?
+            //If so, attack by comparing strength
+                //If activeplayer wins:
+                    //Assign treasure if necessary
+                    //Has he used all 4 moves?
+                        //If so, turn over
+                        //If not, continue turn
+                //If activeplayer loses:
+                    //Did activeplayer have treasure?
+                        //If so, give treasure to second warrior, set moves to non-encumbered value, continue turn
+                        //If not, has activeplayer used all of his moves?
+                            //If so, end turn
+                            //If not, continue 
+            
+            //If not, nothing happens...
+    }
+
+    public void dragonAttack(){
+        //Is there more than 1 piece on the tile?
+            //If so, attack whoever has the lower strength
+            //If not, dragon attacks the weaker warrior
+                //Check weaker warrior health (if sufficient: lose 1 health>secret room; 
+                                            // if not: player eliminated)
+    } 
 
 
     public void resetRoutine()
