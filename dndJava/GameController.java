@@ -3,20 +3,25 @@ import com.wwu.graphics.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class GameController implements BoardGraphicsInf
 {
     private Board gb;
     private GameGraphics gg;
 
-    private int numPlayers = 1;
+    private int playersTurn = 1;
     
     //Game can be in Setup Mode or Game Play Mode
     public gameSetupState setupState;
     public gamePlayState playState;
 
+    //player secret room select
     private int[] psrSelect;
+    //player move select
     private int[] pmSelect;
-    private int activePlayer;
+    
+     private int activePlayer;
 
     public static void main(String args[])
     {
@@ -41,7 +46,7 @@ public class GameController implements BoardGraphicsInf
     {
         gg = new GameGraphics(this);
         gb = new Board();
-        setupState = gameSetupState.start;
+        this.setupState = gameSetupState.start;
     }
 
     //SETUP STATES
@@ -70,15 +75,18 @@ public class GameController implements BoardGraphicsInf
                 gg.addTextToInfoArea("Press Next To Confirm Choice");
                 gg.addTextToInfoArea("Select Your Secret Room");
                 setupState = gameSetupState.firstPlayerSetup;
+                activePlayer = 1;
                 break;
             case firstPlayerSetup:
                 //puts player one into selected secret room
 
                 gb.selectSecretRoom(psrSelect[0], psrSelect[1], 1);
-                gg.changeTileImage(psrSelect[0], psrSelect[1], "HERO1");
+                //first parameter col, second parameter row
+                gg.changeTileImage(psrSelect[1], psrSelect[0], "HERO1");
                 gb.playerOneLoc = new int[] {psrSelect[0], psrSelect[1]};
-                gb.addPlayer(new Player());
-                psrSelect = new int[] {};
+                gb.addPlayer(new Player(),activePlayer);
+                //reset secret room
+                this.psrSelect = null;
                 setupState = gameSetupState.secondPlayerSetup;
                 gg.addTextToInfoArea("For single player select enter again");
                 gg.addTextToInfoArea("For 2 Player Select Another Secret Room and press enter");
@@ -89,16 +97,24 @@ public class GameController implements BoardGraphicsInf
 
                 if(psrSelect != null)
                 {
-                    gb.addPlayer(new Player());
+                    activePlayer = 2;
+                    gb.addPlayer(new Player(),activePlayer);
+                    //first parameter col, second parameter row
                     gb.selectSecretRoom(psrSelect[0], psrSelect[1], 2);
-                    gb.playerOneLoc = new int[] {psrSelect[0], psrSelect[1]};
-                    gg.changeTileImage(psrSelect[0], psrSelect[1], "HERO2");
+                    gb.playerTwoLoc = new int[] {psrSelect[0], psrSelect[1]};
+                    gg.changeTileImage(psrSelect[1], psrSelect[0], "HERO2");
+                    // numPlayers = 2;
                 }
                 gb.selectTreasureRoom();
                 gb.ensurePathToTreasure();
+                //test
+                showWalls();
 
                 setupState = gameSetupState.complete;
                 playState = gamePlayState.playerMove;
+                //set active player back to 1
+                activePlayer = 1;
+                
                 gg.addTextToInfoArea("Player 1 turn");
                 break;
             case complete:
@@ -110,6 +126,7 @@ public class GameController implements BoardGraphicsInf
     public void execPlay(){
         switch(playState){
             case playerMove:
+                playerMove(activePlayer);
                 break;
             case dragonMove:
                 break;
@@ -121,158 +138,173 @@ public class GameController implements BoardGraphicsInf
         }
     }
 
-//DANIEL DEPRECTIATED
-//=============================================================================================================
-
-    // //Facilitates methods that execute during State Change 
-    // //
-    // public void updateState()
-    // {
-    //     switch(this.setupState)
-    //     {
-    //         case notStarted:
-    //             //handle this state and move to the next one
-    //             stateNotStarted();
-    //             break;
-    //         case playerSetup:
-    //             stateP1Setup();
-    //             break;
-    //         case finalizeSetup:
-    //             stateFinalizeSetup();
-    //             break;
-    //         case complete:
-    //             break;
-    //     }
-    // }
-
-    // //Facilitates methods that execute during State Change 
-    // public void gamePlay()
-    // {
-    //     switch(playState)
-    //     {
-    //         case player1Move:
-    //             playerMove(0);
-    //             break;
-    //         case player2Move:
-    //             playerMove(1);
-    //             break;
-    //     }
-
-    // }
-
-
-    // public void stateNotStarted()
-    // {
-    //     setupState = setupState.playerSetup;
-    //     gg.addTextToInfoArea("Press Next To Confirm Choice");
-    //     gg.addTextToInfoArea("Select Your Secret Room");
-    // }
-    
-    // public void stateP1Setup()
-    // {
-    //     Square secretRoom = this.pendingSecretRoomSelect;
-    //     this.gb.setSecretRoom(secretRoom, 0);
-    //     this.gg.changeTileImage(secretRoom.getCol(), secretRoom.getRow(), "HERO1");
-    //     this.gb.setPlayerLocation(secretRoom.getRow(),secretRoom.getCol(),0);
-    //     this.pendingSecretRoomSelect = null;
-        
-    //     // move to next state
-    //     this.setupState = gameSetupState.finalizeSetup;
-    //     this.gg.addTextToInfoArea("For single player select enter again");
-    //     this.gg.addTextToInfoArea("For 2 Player Select Another Secret Room and press enter");
-
-    // }
-    // // optional second player, sets up tresure room and walls
-    // public void stateFinalizeSetup()
-    // {
-    //     // this puts us in a 2 player game
-    //     if(pendingSecretRoomSelect != null)
-    //     {
-    //         Player p2 = new Player();
-    //         gb.setPlayer(p2, 1);
-    //         twoPlayer = true;
-
-    //         Square secretRoom = pendingSecretRoomSelect;
-    //         gb.setSecretRoom(secretRoom, 1);
-    //         gb.setPlayerLocation(secretRoom.getRow(),secretRoom.getCol(),1);
-
-    //         gg.changeTileImage(secretRoom.getCol(), secretRoom.getRow(), "HERO2");
-    //     }
-    //     //chooses treasure room and generates walls
-    //     gb.gbSetup();
-        
-    //     //randomly chooses treasure room.
-    //     //gb.selectTreasureRoom();
-    //     //gb.generateWalls();
-
-    //     setupState = gameSetupState.complete;
-    //     playState = gamePlayState.player1Move;
-    //     gg.addTextToInfoArea("Player1 Make Your Move");
-
-    // }
-
-//=============================================================================================================
-
     //GamePlayMethods
-    public void playerMove(int playerNum)
+
+    public void playerMove(int activePlayer)
     {
-        //how to initialize 8 moves?
-        //check if chosen move is valid
-        //check if wall is in the way 
-        //is player on same square
-        //if so end turn switch state
-        //subtract move and
-
         int[] currentLoc = new int[2];
-        if(playerNum == 1) currentLoc = gb.playerOneLoc;
-        else if(playerNum == 2) currentLoc = gb.playerTwoLoc;
-        else System.out.println("Error: playerMove invalid player selected");
-        if(gb.validMoveCheck(pmSelect, playerNum))
+        if(activePlayer == 1) currentLoc = gb.playerOneLoc;
+        else if(activePlayer == 2) currentLoc = gb.playerTwoLoc;
+        int[] selectedMove = pmSelect;
+
+        if(!validMoveCheck(currentLoc, selectedMove)) return;
+        if(!wallCheck(currentLoc, selectedMove))
         {
-            //check for wall
-            gg.changeTileImage(currentLoc[0], currentLoc[1], "TILE");
-            if(playerNum == 1)
+            //turn is over
+            if(activePlayer == 1)
             {
-                gg.changeTileImage(pmSelect[0], pmSelect[1], "HERO1");  
-                gb.playerOneLoc[0] = pmSelect[0];
-                gb.playerOneLoc[1] = pmSelect[1];
+                this.activePlayer = 2;
+                gb.getPlayer(2).resetMoves();
+
             }
-            else if(playerNum == 2)
+            else if(activePlayer == 2)
             {
-                gg.changeTileImage(pmSelect[0], pmSelect[1], "HERO2");
-                gb.playerTwoLoc[0] = pmSelect[0];
-                gb.playerTwoLoc[1] = pmSelect[1];
+                this.activePlayer = 1;
+                gb.getPlayer(1).resetMoves();
+                //playState = gamePlayState.dragonMove;
             }
-            //subtracts move from moveCount
-            gb.getPlayer(playerNum).getMoveCount(-1);
-        }
-        else
-        {
-            gg.addTextToInfoArea("Invalid Move");
+            return;
         }
 
-        //change state if player has no more moves
-        if(gb.getPlayer(playerNum).getMoveCount(0) == 0)
+        //moving of player if move is valid
+        gg.changeTileImage(currentLoc[1], currentLoc[0], "TILE");
+        if(activePlayer == 1) 
         {
-            if(gb.getPlayer(2) != null)
+            gb.playerOneLoc[0] = pmSelect[0];
+            gb.playerOneLoc[1] = pmSelect[1];
+            gg.changeTileImage(pmSelect[1], pmSelect[0], "HERO1");  
+        }
+        else if(activePlayer == 2)
+        {
+            gb.playerTwoLoc[0] = pmSelect[0];
+            gb.playerTwoLoc[1] = pmSelect[1];
+            gg.changeTileImage(pmSelect[1], pmSelect[0], "HERO2");
+        }
+        //If Dragon is not awake checks to see if dragon needs to be woken up
+        if(!gb.getDragon().isAwake())
+        {
+            //This coniditon is real messy. Change if time allows.
+            //WakeupDragon takes player location and dragon location, check to se if player is within 3 moves, if so it wakes up the dragon and returns boolean true through which we print message.
+            if(gb.getDragon().wakeUpDragon(gb.getPlayerLoc(activePlayer),gb.dragonLoc ))
             {
-                if(activePlayer == 1 && playState == gamePlayState.playerMove)
-                {
-                    gb.getPlayer(2).resetMoves();
-                    activePlayer = 2;
-                }
-                else if(activePlayer == 2 && playState == gamePlayState.playerMove)
-                {
-                    gb.getPlayer(0).resetMoves();
-                    playState = gamePlayState.dragonMove;
-                }
+                gg.addTextToInfoArea("DRAGON IS AWAKE!");
             }
-            else
+
+        }
+
+
+
+
+        //subtract one from moves
+        gb.getPlayer(activePlayer).moveMade();
+        int movesLeft = gb.getPlayer(activePlayer).getMoves();
+        if(movesLeft == 0)
+        {
+            if(activePlayer == 1)
             {
-                playState = gamePlayState.dragonMove;
+                //if player 2 is null, switch to dragon state 
+                this.activePlayer = 2;
+                gb.getPlayer(activePlayer).resetMoves();
+            }
+            else if(activePlayer == 2)
+            {
+                //switch to dragon state 
+                this.activePlayer = 1;
+                gb.getPlayer(activePlayer).resetMoves();
             }
         }
     }
+
+    public boolean validMoveCheck(int[] currentLoc, int[] selectedMove)
+    {
+        int rowDifference = Math.abs(currentLoc[0]-selectedMove[0]);
+        int colDifference = Math.abs(currentLoc[1]-selectedMove[1]);
+    
+        if(rowDifference + colDifference != 1)
+        {
+            gg.addTextToInfoArea("Invalid Move");
+            return false;
+        } 
+        return true;
+    }
+
+    public boolean wallCheck(int[] currentLoc, int[] selectedMove)
+    {
+        int rowDifference = (currentLoc[0]-selectedMove[0]);
+        int colDifference = (currentLoc[1]-selectedMove[1]);
+
+        char[] moveDir = new char[2];
+            //moving up
+            if(rowDifference > 0) moveDir = new char[] {'n', 's'};
+            //moving down
+            else if(rowDifference < 0) moveDir = new char[] {'s', 'n'};
+            //moving left
+            else if(colDifference > 0) moveDir = new char[] {'w', 'e'};
+            //moving right
+            else if(colDifference < 0) moveDir = new char[] {'e', 'w'};
+            
+            Square[][] board = gb.getBoard();
+            Square currentSquare = board[currentLoc[0]][currentLoc[1]];
+            Square destSquare = board[pmSelect[0]][pmSelect[1]];
+
+                if(currentSquare.hasWall(moveDir[0]) || destSquare.hasWall(moveDir[1]))
+            {
+                if(moveDir[0] == 'n') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.NORTH,true);
+                else if(moveDir[0] == 's') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.SOUTH,true);
+                else if(moveDir[0] == 'e') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.EAST,true);
+                else if(moveDir[0] == 'w') gg.wallGraphicSetVisible(currentLoc[1], currentLoc[0], GraphicsWallDirections.WEST,true);
+                
+                return false;
+            }
+            return true;
+    }
+
+    public void dragonTurnToMove()
+    {
+        //check if dragon is awake
+        //should dragon be woken up
+
+        //find target player
+        //move dragon
+       
+        //if dragon is not awake 
+        if(!gb.getDragon().isAwake())
+        {
+            this.playState = gamePlayState.playerMove;
+            return;
+        }
+        else
+        {
+            Player[] players = {gb.getPlayer(1), gb.getPlayer(2)};
+            Dragon dragon = gb.getDragon();
+            //returns player num of targer either 1 or 2
+            int TargetPlayerNum = dragon.findPlayerToTarget(players);
+            
+            int[] targetPlayerLoc = gb.getPlayerLoc(TargetPlayerNum);
+            int[] dragonLoc = gb.getDragonLoc();
+    
+            //finds dragons move
+            int[] newDragonMove = dragon.dragonMove(targetPlayerLoc, dragonLoc);
+            //updates dragon location
+            gb.dragonLoc = newDragonMove;
+
+        }
+        //if dragon found player dragon attacks 
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 
     public void resetRoutine()
     {
@@ -301,7 +333,7 @@ public class GameController implements BoardGraphicsInf
         if(type == GraphicsClickTypes.NEXT)
         {
             //Player 1 Confirms Secret Room Choice 
-            if((setupState == gameSetupState.firstPlayerSetup || setupState == gameSetupState.secondPlayerSetup) && !Arrays.equals(psrSelect, new int[] {}))
+            if((setupState == gameSetupState.firstPlayerSetup || setupState == gameSetupState.secondPlayerSetup))
             {
                 execSetup();
             }
@@ -330,5 +362,37 @@ public class GameController implements BoardGraphicsInf
             execPlay();
         }
     }
+        //test
+        public void showWalls()
+        {
+            Square[][] board = gb.getBoard();
+            for (int row = 0; row < 8; row++)
+            {
+                for(int col = 0; col < 8; col++)
+                {
+                    Square s = board[row][col];
+                    if(s.hasWall('n'))
+                    {
+                        gg.wallGraphicSetVisible(col,row, GraphicsWallDirections.NORTH, true);
+
+                    }
+                    if(s.hasWall('s'))
+                    {
+                        gg.wallGraphicSetVisible(col,row, GraphicsWallDirections.SOUTH, true);
+
+                    }
+                    if(s.hasWall('e'))
+                    {
+                        gg.wallGraphicSetVisible(col,row, GraphicsWallDirections.EAST, true);
+
+                    }
+                    if(s.hasWall('w'))
+                    {
+                        gg.wallGraphicSetVisible(col,row, GraphicsWallDirections.WEST, true);
+
+                    }
+                }
+            }
+        }
     
 }

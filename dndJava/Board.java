@@ -4,20 +4,28 @@ import java.util.Random;
 public class Board{
 
     private Square[][] gameBoard;
-    private Player[] players;
+    private Player[] players = new Player[2];
     private Dragon dragon;
 	private Square treasureRoom = null;
     private Square[] secretRooms = new Square[2];
 
+    //player location
     public int[] playerOneLoc;
     public int[] playerTwoLoc;
 
+    public int[] dragonLoc;
+
     public Board(){
         gameBoard = new Square[8][8];
+        //places walls at random
         PopulateBoard();
+        this.dragon = new Dragon();
     }
 
     public void PopulateBoard(){
+        Random rng = new Random();
+        //generates a random number between 20 and 30. Max # of walls needs to be 30
+        int numberOfWalls = rng.nextInt(10) + 21;
         for(int i = 0; i < gameBoard.length; i++){
             for(int j = 0; j < gameBoard[0].length; j++){
                 boolean n = false;
@@ -37,6 +45,8 @@ public class Board{
                     w = true;
                 }
                 gameBoard[i][j] = new Square(n,e,s,w,i,j);
+                numberOfWalls--;
+                //if(numberOfWalls)
             }
         }
     }
@@ -79,6 +89,10 @@ public class Board{
         else if(secretRooms[0] == null && secretRooms[1] == null) System.out.println("Error: ensurePathToTreasure no origin selected");
         else{
             for(Square room : secretRooms){
+                if(room == null)
+                {
+                    break;
+                }
                 Random rng = new Random();
                 char lastLoc = ' ';
                 int[] loc = treasureRoom.getLocation();
@@ -170,18 +184,24 @@ public class Board{
         else if(playerNum == 2) playerLoc = playerTwoLoc;
         else System.out.println("Error: validMoveCheck invalid player selected");
 
-        int rowDifference = Math.abs(playerLoc[0]-pmSelect[0]);
-        int colDifference = Math.abs(playerLoc[1]-pmSelect[1]);
+        int rowDifference = (playerLoc[0]-pmSelect[0]);
+        int colDifference = (playerLoc[1]-pmSelect[1]);
 
-        if(rowDifference + colDifference != 1)
+        if(Math.abs(rowDifference + colDifference) != 1)
         {
             return false;
-        } else {
+        } 
+        else 
+        {
             char[] moveDir = new char[2];
-            if(rowDifference > 0) moveDir = new char[] {'s', 'n'};
-            else if(rowDifference < 0) moveDir = new char[] {'n', 's'};
-            else if(colDifference > 0) moveDir = new char[] {'e', 'w'};
-            else if(colDifference < 0) moveDir = new char[] {'w', 'e'};
+            //moving up
+            if(rowDifference > 0) moveDir = new char[] {'n', 's'};
+            //moving down
+            else if(rowDifference < 0) moveDir = new char[] {'s', 'n'};
+            //moving left
+            else if(colDifference > 0) moveDir = new char[] {'w', 'e'};
+            //moving right
+            else if(colDifference < 0) moveDir = new char[] {'e', 'w'};
             else System.out.println("Error: validMoveCheck no move selected");
 
             Square currentSquare = gameBoard[playerLoc[0]][playerLoc[1]];
@@ -191,11 +211,15 @@ public class Board{
                 //indicate that wall was encountered
                 return false;
             }
-        } return false;
+            return true;
+        } 
     }
 
-    public void addPlayer(Player p){
-        players[players.length - 1] = p;
+    public void addPlayer(Player p, int activePlayer)
+    {
+        players[activePlayer - 1] = p;
+        //
+        p.resetMoves();
     }
 
     public Player getPlayer(int p){
@@ -205,5 +229,28 @@ public class Board{
     public Square[][] getBoard(){
         return gameBoard;
     }
+
+    public Dragon getDragon()
+    {
+        return this.dragon;
+    }
+
+    //player num is either 1 or 2
+    //used by Dragon Move Method in GameControler
+    public int[] getPlayerLoc(int playerNum)
+    {
+        if(playerNum == 1)
+        {
+            return this.playerOneLoc;
+        }
+        return this.playerTwoLoc;
+    }
+
+    public int[] getDragonLoc()
+    {
+        return this.dragonLoc;
+    }
+
+
 	
 }
