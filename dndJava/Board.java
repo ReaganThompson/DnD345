@@ -173,6 +173,8 @@ public class Board{
                 //sets dragon's location 
                 //dragon.row = row;
                 //dragon.col = col;
+                this.dragonLoc = new int[] {row,col};
+                
 			}
 		}		
 	}

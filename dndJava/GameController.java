@@ -192,9 +192,6 @@ public class GameController implements BoardGraphicsInf
 
         }
 
-
-
-
         //subtract one from moves
         gb.getPlayer(activePlayer).moveMade();
         int movesLeft = gb.getPlayer(activePlayer).getMoves();

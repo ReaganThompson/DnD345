@@ -2,10 +2,16 @@ import java.util.*;
 
 public class Player extends Piece{
 
-    private static int health;
-    private static int moves;
+    private int health;
+    private int moves;
     private static boolean treasure;
     private static int attacks;
+
+    public Player()
+    {
+        this.health = 3;
+        resetMoves();
+    }
 
     public static int getHealth(int change){
         //update with change and then return value
@@ -24,8 +30,21 @@ public class Player extends Piece{
         return treasure;
     }
 
-    public void resetMoves(){
-        moves = (2 + (2*health));
+    public void resetMoves()
+    {
+        this.moves = (2 + (2*health));
     }
+
+    public void moveMade()
+    {
+        this.moves--;
+    }
+
+    public int getMoves()
+    {
+        return this.moves;
+    }
+
+
     
 }
