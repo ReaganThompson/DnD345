@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Random;
 
 public class Board{
 
@@ -7,7 +6,7 @@ public class Board{
     private Player[] players = new Player[2];
     private Dragon dragon;
 	private Square treasureRoom = null;
-    private Square[] secretRooms = new Square[2];
+    public Square[] secretRooms = new Square[2];
 
     //player location
     public int[] playerOneLoc;

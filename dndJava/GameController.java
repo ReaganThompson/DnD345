@@ -63,7 +63,6 @@ public class GameController implements BoardGraphicsInf
         playerMove,
         dragonMove,
         playerAttack,
-        dragonAttack,
         end
     }
 
@@ -128,17 +127,23 @@ public class GameController implements BoardGraphicsInf
                 playerMove(activePlayer);
                 break;
             case dragonMove:
+                if(gb.getPlayer(1).hasTreasure() && (Arrays.equals(gb.getPlayerLoc(2), gb.secretRooms[0].getLocation())))
+                {
+                    return;
+                }
+                else if(gb.getPlayer(2).hasTreasure() && (Arrays.equals(gb.getPlayerLoc(2), gb.secretRooms[1].getLocation())))
+                {
+                    return;
+                }
+                dragonTurnToMove();
                 break;
             case playerAttack:
-                break;
-            case dragonAttack:
                 break;
             default:
         }
     }
 
     //GamePlayMethods
-
     public void playerMove(int activePlayer)
     {
         int[] currentLoc = new int[2];
@@ -182,7 +187,6 @@ public class GameController implements BoardGraphicsInf
         //If Dragon is not awake checks to see if dragon needs to be woken up
         if(!gb.getDragon().isAwake())
         {
-            //This coniditon is real messy. Change if time allows.
             //WakeupDragon takes player location and dragon location, check to se if player is within 3 moves, if so it wakes up the dragon and returns boolean true through which we print message.
             if(gb.getDragon().wakeUpDragon(gb.getPlayerLoc(activePlayer)))
             {
