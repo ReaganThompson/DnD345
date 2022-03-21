@@ -5,7 +5,7 @@ public class Player extends Piece{
     private int health;
     private int moves;
     private int strength = 100;
-    private static boolean treasure;
+    private boolean treasure;
     private static int attacks;
 
     public Player()
@@ -39,7 +39,13 @@ public class Player extends Piece{
     
     public void resetMoves()
     {
-        this.moves = (2 + (2*health));
+        if(!treasure){
+            this.moves = (2 + (2*health));
+        }
+        else
+        {
+            this.moves = 4;
+        }
     }
 
     public void moveMade()
@@ -48,9 +54,18 @@ public class Player extends Piece{
         this.strength--;
     }
 
-    public void attacked(){
+    public void attacked()
+    {
         this.health--;
     }
     
-    
+    public void wonFight()
+    {
+        this.treasure = true;
+    }
+
+    public void lostFight()
+    {
+        this.treasure = false;
+    }
 }

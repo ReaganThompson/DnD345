@@ -321,30 +321,21 @@ public class GameController implements BoardGraphicsInf
 
     public void WarriorAttack(){
         // Is one of the players carrying the treasure?
-            //If so, attack by comparing strength
-                //If activeplayer wins:
-                    //Assign treasure if necessary
-                    //Has he used all 4 moves?
-                        //If so, turn over
-                        //If not, continue turn
-                //If activeplayer loses:
-                    //Did activeplayer have treasure?
-                        //If so, give treasure to second warrior, set moves to non-encumbered value, continue turn
-                        //If not, has activeplayer used all of his moves?
-                            //If so, end turn
-                            //If not, continue 
-            
-            //If not, nothing happens...
+        if(gb.getPlayer(1).hasTreasure() || gb.getPlayer(2).hasTreasure())
+        {
+            if(gb.getPlayer(1).getStrength() > gb.getPlayer(2).getStrength()){
+                //Player 1 has more strength & won the fight
+                gb.getPlayer(1).wonFight();
+                gb.getPlayer(2).lostFight();
+            }
+            else
+            {
+                //Player 2 has more strength & won the fight
+                gb.getPlayer(2).wonFight();
+                gb.getPlayer(1).lostFight();
+            }
+        }
     }
-
-    public void dragonAttack(){
-        //Is there more than 1 piece on the tile?
-            //If so, attack whoever has the lower strength
-            //If not, dragon attacks the weaker warrior
-                //Check weaker warrior health (if sufficient: lose 1 health>secret room; 
-                                            // if not: player eliminated)
-    } 
-
 
     public void resetRoutine()
     {
